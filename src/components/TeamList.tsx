@@ -61,7 +61,10 @@ export default function TeamList({ teams, onRemove, onEdit }: TeamListProps) {
                 type="text"
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter") handleSaveEdit(); if (e.key === "Escape") cancelEdit(); }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSaveEdit();
+                  if (e.key === "Escape") cancelEdit();
+                }}
                 placeholder="Nombre del equipo"
                 className="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-amber-500"
               />
@@ -69,13 +72,14 @@ export default function TeamList({ teams, onRemove, onEdit }: TeamListProps) {
                 type="text"
                 value={editPlayers}
                 onChange={(e) => setEditPlayers(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter") handleSaveEdit(); if (e.key === "Escape") cancelEdit(); }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSaveEdit();
+                  if (e.key === "Escape") cancelEdit();
+                }}
                 placeholder="Jugadores (separados por coma)"
                 className="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-amber-500"
               />
-              {editError && (
-                <p className="text-red-400 text-xs">{editError}</p>
-              )}
+              {editError && <p className="text-red-400 text-xs">{editError}</p>}
               <div className="flex gap-2">
                 <button
                   onClick={handleSaveEdit}

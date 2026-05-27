@@ -74,7 +74,9 @@ export default function MatchCard({
       </div>
       {winner && (
         <div className="mt-2 text-center">
-          <p className="text-xs text-amber-400 font-semibold truncate">🏆 {winner.name}</p>
+          <p className="text-xs text-amber-400 font-semibold truncate">
+            🏆 {winner.name}
+          </p>
           {isCurrentRound && onClearWinner && (
             <button
               onClick={onClearWinner}
