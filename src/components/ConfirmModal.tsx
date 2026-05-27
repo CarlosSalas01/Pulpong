@@ -10,7 +10,7 @@ interface ConfirmModalProps {
 export default function ConfirmModal({
   title,
   message,
-  confirmLabel = 'Confirmar',
+  confirmLabel = "Confirmar",
   danger = true,
   onConfirm,
   onCancel,
@@ -37,8 +37,8 @@ export default function ConfirmModal({
             onClick={onConfirm}
             className={`flex-1 font-bold py-2.5 rounded-xl transition-colors text-white ${
               danger
-                ? 'bg-red-600 hover:bg-red-500'
-                : 'bg-amber-500 hover:bg-amber-400 text-black'
+                ? "bg-red-600 hover:bg-red-500"
+                : "bg-amber-500 hover:bg-amber-400 text-black"
             }`}
           >
             {confirmLabel}
