@@ -3,12 +3,14 @@ import type { Match, Team } from "../models/tournament.types";
 interface MatchCardProps {
   match: Match;
   onSelectWinner?: (winner: Team) => void;
+  onClearWinner?: () => void;
   isCurrentRound: boolean;
 }
 
 export default function MatchCard({
   match,
   onSelectWinner,
+  onClearWinner,
   isCurrentRound,
 }: MatchCardProps) {
   const { teamA, teamB, winner } = match;
@@ -16,7 +18,7 @@ export default function MatchCard({
   // Partido con bye: solo un equipo, ya tiene ganador automático
   if (!teamB) {
     return (
-      <div className="bg-neutral-800 border border-neutral-700 rounded-xl p-3 w-44 shrink-0">
+      <div className="bg-neutral-800 border border-neutral-700 rounded-xl p-3 w-full md:w-44 shrink-0">
         <p className="text-xs text-amber-500 font-semibold mb-2 uppercase tracking-wide">
           BYE
         </p>
@@ -47,7 +49,7 @@ export default function MatchCard({
   }
 
   return (
-    <div className="bg-neutral-800 border border-neutral-700 rounded-xl p-3 w-44 shrink-0">
+    <div className="bg-neutral-800 border border-neutral-700 rounded-xl p-3 w-full md:w-44 shrink-0">
       <p className="text-xs text-neutral-500 font-semibold mb-2 uppercase tracking-wide">
         Ronda {match.round}
       </p>
@@ -71,9 +73,17 @@ export default function MatchCard({
         </button>
       </div>
       {winner && (
-        <p className="text-xs text-amber-400 mt-2 text-center font-semibold truncate">
-          🏆 {winner.name}
-        </p>
+        <div className="mt-2 text-center">
+          <p className="text-xs text-amber-400 font-semibold truncate">🏆 {winner.name}</p>
+          {isCurrentRound && onClearWinner && (
+            <button
+              onClick={onClearWinner}
+              className="text-xs text-neutral-500 hover:text-white mt-1 transition-colors underline"
+            >
+              ↩ Cambiar
+            </button>
+          )}
+        </div>
       )}
     </div>
   );

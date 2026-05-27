@@ -1,16 +1,16 @@
-import { useCallback, useEffect, useState } from "react";
-import type { Match, Team, Tournament } from "../models/tournament.types";
-import { storageService } from "../services/storage.service";
+import { useCallback, useEffect, useState } from 'react';
+import type { Match, Team, Tournament } from '../models/tournament.types';
+import { storageService } from '../services/storage.service';
 import {
   areAllMatchesCompleted,
   generateFirstRound,
   generateNextRound,
   getChampion,
-} from "../utils/bracket.utils";
+} from '../utils/bracket.utils';
 
 const MAX_TEAMS = 32;
 
-type Phase = "setup" | "teams" | "bracket";
+type Phase = 'setup' | 'teams' | 'bracket';
 
 interface UseTournamentReturn {
   tournament: Tournament | null;
@@ -33,25 +33,22 @@ export function useTournament(): UseTournamentReturn {
   );
   const [phase, setPhase] = useState<Phase>(() => {
     const saved = storageService.load();
-    if (!saved) return "setup";
-    if (saved.rounds.length === 0) return "teams";
-    return "bracket";
+    if (!saved) return 'setup';
+    if (saved.rounds.length === 0) return 'teams';
+    return 'bracket';
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (tournament) {
-      storageService.save({
-        ...tournament,
-        updatedAt: new Date().toISOString(),
-      });
+      storageService.save({ ...tournament, updatedAt: new Date().toISOString() });
     }
   }, [tournament]);
 
   const createTournament = useCallback((name: string) => {
     const newTournament: Tournament = {
       id: crypto.randomUUID(),
-      name: name.trim() || "Torneo Beer Pong",
+      name: name.trim() || 'Torneo Beer Pong',
       teams: [],
       rounds: [],
       champion: null,
@@ -59,13 +56,13 @@ export function useTournament(): UseTournamentReturn {
       updatedAt: new Date().toISOString(),
     };
     setTournament(newTournament);
-    setPhase("teams");
-    setError("");
+    setPhase('teams');
+    setError('');
   }, []);
 
   const addTeam = useCallback((name: string, players: string[]) => {
     if (!name.trim()) {
-      setError("El nombre del equipo no puede estar vacío.");
+      setError('El nombre del equipo no puede estar vacío.');
       return;
     }
     setTournament((prev) => {
@@ -81,11 +78,11 @@ export function useTournament(): UseTournamentReturn {
         setError(`Ya existe un equipo llamado "${name.trim()}".`);
         return prev;
       }
-      setError("");
+      setError('');
       const newTeam: Team = {
         id: crypto.randomUUID(),
         name: name.trim(),
-        players: players.filter((p) => p.trim() !== ""),
+        players: players.filter((p) => p.trim() !== ''),
       };
       return { ...prev, teams: [...prev.teams, newTeam] };
     });
@@ -98,35 +95,30 @@ export function useTournament(): UseTournamentReturn {
     });
   }, []);
 
-  const editTeam = useCallback(
-    (id: string, name: string, players: string[]) => {
-      setTournament((prev) => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          teams: prev.teams.map((t) =>
-            t.id === id
-              ? { ...t, name: name.trim(), players }
-              : t,
-          ),
-        };
-      });
-    },
-    [],
-  );
+  const editTeam = useCallback((id: string, name: string, players: string[]) => {
+    setTournament((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        teams: prev.teams.map((t) =>
+          t.id === id ? { ...t, name: name.trim(), players } : t,
+        ),
+      };
+    });
+  }, []);
 
   const generateBracket = useCallback(() => {
     setTournament((prev) => {
       if (!prev) return prev;
       if (prev.teams.length < 2) {
-        setError("Se necesitan al menos 2 equipos para generar el bracket.");
+        setError('Se necesitan al menos 2 equipos para generar el bracket.');
         return prev;
       }
-      setError("");
+      setError('');
       const firstRound = generateFirstRound(prev.teams);
       return { ...prev, rounds: [firstRound] };
     });
-    setPhase("bracket");
+    setPhase('bracket');
   }, []);
 
   const selectWinner = useCallback(
@@ -175,12 +167,12 @@ export function useTournament(): UseTournamentReturn {
     });
   }, []);
 
-  // resetTournament ya no llama window.confirm — App.tsx maneja el ConfirmModal
+  // No llama window.confirm — App.tsx muestra el ConfirmModal antes
   const resetTournament = useCallback(() => {
     storageService.clear();
     setTournament(null);
-    setPhase("setup");
-    setError("");
+    setPhase('setup');
+    setError('');
   }, []);
 
   return {
@@ -194,137 +186,6 @@ export function useTournament(): UseTournamentReturn {
     generateBracket,
     selectWinner,
     clearWinner,
-    advanceRound,
-    resetTournament,
-  };
-}
-
-
-export function useTournament(): UseTournamentReturn {
-  const [tournament, setTournament] = useState<Tournament | null>(() =>
-    storageService.load(),
-  );
-  const [phase, setPhase] = useState<Phase>(() => {
-    const saved = storageService.load();
-    if (!saved) return "setup";
-    if (saved.rounds.length === 0) return "teams";
-    return "bracket";
-  });
-  const [error, setError] = useState("");
-
-  // Persistir automáticamente cuando cambia el torneo
-  useEffect(() => {
-    if (tournament) {
-      storageService.save({
-        ...tournament,
-        updatedAt: new Date().toISOString(),
-      });
-    }
-  }, [tournament]);
-
-  const createTournament = useCallback((name: string) => {
-    const newTournament: Tournament = {
-      id: crypto.randomUUID(),
-      name: name.trim() || "Torneo Beer Pong",
-      teams: [],
-      rounds: [],
-      champion: null,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    setTournament(newTournament);
-    setPhase("teams");
-    setError("");
-  }, []);
-
-  const addTeam = useCallback((name: string, players: string[]) => {
-    if (!name.trim()) {
-      setError("El nombre del equipo no puede estar vacío.");
-      return;
-    }
-    setError("");
-    setTournament((prev) => {
-      if (!prev) return prev;
-      const newTeam: Team = {
-        id: crypto.randomUUID(),
-        name: name.trim(),
-        players: players.filter((p) => p.trim() !== ""),
-      };
-      return { ...prev, teams: [...prev.teams, newTeam] };
-    });
-  }, []);
-
-  const removeTeam = useCallback((id: string) => {
-    setTournament((prev) => {
-      if (!prev) return prev;
-      return { ...prev, teams: prev.teams.filter((t) => t.id !== id) };
-    });
-  }, []);
-
-  const generateBracket = useCallback(() => {
-    setTournament((prev) => {
-      if (!prev) return prev;
-      if (prev.teams.length < 2) {
-        setError("Se necesitan al menos 2 equipos para generar el bracket.");
-        return prev;
-      }
-      setError("");
-      const firstRound = generateFirstRound(prev.teams);
-      return { ...prev, rounds: [firstRound] };
-    });
-    setPhase("bracket");
-  }, []);
-
-  const selectWinner = useCallback(
-    (roundIndex: number, matchId: string, winner: Team) => {
-      setTournament((prev) => {
-        if (!prev) return prev;
-        const rounds = prev.rounds.map((round, ri) => {
-          if (ri !== roundIndex) return round;
-          return round.map((match): Match => {
-            if (match.id !== matchId) return match;
-            return { ...match, winner };
-          });
-        });
-        return { ...prev, rounds };
-      });
-    },
-    [],
-  );
-
-  const advanceRound = useCallback(() => {
-    setTournament((prev) => {
-      if (!prev) return prev;
-      const currentRound = prev.rounds[prev.rounds.length - 1];
-      if (!areAllMatchesCompleted(currentRound)) return prev;
-
-      const nextRound = generateNextRound(currentRound);
-      const newRounds = [...prev.rounds, nextRound];
-      const champion = getChampion(newRounds);
-      return { ...prev, rounds: newRounds, champion };
-    });
-  }, []);
-
-  const resetTournament = useCallback(() => {
-    const confirmed = window.confirm(
-      "¿Estás seguro de que deseas reiniciar el torneo? Se perderán todos los datos.",
-    );
-    if (!confirmed) return;
-    storageService.clear();
-    setTournament(null);
-    setPhase("setup");
-    setError("");
-  }, []);
-
-  return {
-    tournament,
-    phase,
-    error,
-    createTournament,
-    addTeam,
-    removeTeam,
-    generateBracket,
-    selectWinner,
     advanceRound,
     resetTournament,
   };
