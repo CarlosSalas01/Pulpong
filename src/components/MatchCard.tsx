@@ -77,12 +77,13 @@ export default function MatchCard({
           <p className="text-xs text-amber-400 font-semibold truncate">
             🏆 {winner.name}
           </p>
+          <hr className="mt-3 border-neutral-700" />
           {isCurrentRound && onClearWinner && (
             <button
               onClick={onClearWinner}
-              className="text-xs text-neutral-500 hover:text-white mt-1 transition-colors underline"
+              className="text-xs text-neutral-500 hover:text-white mt-1 transition-colors"
             >
-              ↩ Cambiar
+              Cambiar
             </button>
           )}
         </div>

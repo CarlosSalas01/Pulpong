@@ -1,5 +1,169 @@
 @import "tailwindcss";
 
+:root {
+  --color-primary: #8b1e1e;
+  --color-secondary: #d6a441;
+  --color-accent: #f2d48a;
+  --color-bg: #fff3d6;
+  --color-surface: #fff8e8;
+  --color-text: #3a1f14;
+  --color-dark: #3a1f14;
+  --color-on-primary: #ffffff;
+
+  --color-muted: color-mix(in srgb, var(--color-text) 62%, transparent);
+  --color-soft: color-mix(
+    in srgb,
+    var(--color-primary) 10%,
+    var(--color-surface)
+  );
+  --color-border: color-mix(in srgb, var(--color-primary) 30%, transparent);
+  --color-border-strong: color-mix(
+    in srgb,
+    var(--color-primary) 55%,
+    transparent
+  );
+  --color-hover: color-mix(
+    in srgb,
+    var(--color-primary) 12%,
+    var(--color-surface)
+  );
+}
+
+:root[data-brand="miller"] {
+  --color-primary: #0033a0;
+  --color-secondary: #c99700;
+  --color-accent: #d71920;
+  --color-bg: #f7f7f2;
+  --color-surface: #ffffff;
+  --color-text: #061a40;
+  --color-dark: #061a40;
+  --color-on-primary: #ffffff;
+}
+
+:root[data-brand="corona"] {
+  --color-primary: #002f6c;
+  --color-secondary: #f6c343;
+  --color-accent: #8ac7e8;
+  --color-bg: #fff8e7;
+  --color-surface: #ffffff;
+  --color-text: #001e42;
+  --color-dark: #001e42;
+  --color-on-primary: #ffffff;
+}
+
+:root[data-brand="victoria"] {
+  --color-primary: #8b1e1e;
+  --color-secondary: #d6a441;
+  --color-accent: #f2d48a;
+  --color-bg: #fff3d6;
+  --color-surface: #fff8e8;
+  --color-text: #3a1f14;
+  --color-dark: #3a1f14;
+  --color-on-primary: #ffffff;
+}
+
+:root[data-brand="modelo"] {
+  --color-primary: #d6a441;
+  --color-secondary: #102a54;
+  --color-accent: #111111;
+  --color-bg: #f8f1e3;
+  --color-surface: #ffffff;
+  --color-text: #111111;
+  --color-dark: #050505;
+  --color-on-primary: #111111;
+}
+
+:root[data-brand="barrilito"] {
+  --color-primary: #d99a22;
+  --color-secondary: #7a3e18;
+  --color-accent: #b3261e;
+  --color-bg: #fff1c7;
+  --color-surface: #fff8e6;
+  --color-text: #2b160a;
+  --color-dark: #2b160a;
+  --color-on-primary: #ffffff;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+@layer components {
+  .app-bg {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .app-surface {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+
+  .app-card {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border-color: var(--color-border);
+    box-shadow: 0 18px 45px
+      color-mix(in srgb, var(--color-dark) 14%, transparent);
+  }
+
+  .app-muted {
+    color: var(--color-muted);
+  }
+
+  .app-title {
+    color: var(--color-text);
+  }
+
+  .app-brand-text {
+    color: var(--color-primary);
+  }
+
+  .app-brand-secondary-text {
+    color: var(--color-secondary);
+  }
+
+  .app-input {
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text);
+  }
+
+  .app-input::placeholder {
+    color: var(--color-muted);
+  }
+
+  .app-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+
+  .app-button-primary {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .app-button-primary:hover {
+    filter: brightness(1.08);
+  }
+
+  .app-button-secondary {
+    background-color: var(--color-soft);
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+
+  .app-button-secondary:hover {
+    background-color: var(--color-hover);
+    border-color: var(--color-border-strong);
+  }
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
