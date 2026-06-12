@@ -19,10 +19,19 @@ export default function RoundColumn({
   const roundNumber = matches[0]?.round ?? roundIndex + 1;
 
   return (
-    <div className="flex flex-col gap-3 w-full md:w-44">
-      <h3 className="text-center text-sm font-bold text-neutral-400 uppercase tracking-widest">
-        {matches.length === 1 ? "Final" : `Ronda ${roundNumber}`}
-      </h3>
+    <div className="flex w-full flex-col gap-3 md:w-48">
+      <div className="rounded-2xl border border-(--color-border) bg-(--color-surface) px-3 py-2 text-center shadow-sm">
+        <h3 className="text-sm font-black uppercase tracking-widest text-(--color-primary)">
+          {matches.length === 1 ? "Final" : `Ronda ${roundNumber}`}
+        </h3>
+
+        {isCurrentRound && (
+          <p className="mt-0.5 text-xs font-semibold text-(--color-muted)">
+            Ronda actual
+          </p>
+        )}
+      </div>
+
       <div className="flex flex-col gap-3">
         {matches.map((match) => (
           <MatchCard

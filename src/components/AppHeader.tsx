@@ -1,6 +1,6 @@
-import RedCupIcon from "./RedCupIcon";
 import BrandSelector from "./BrandSelector";
 import type { BeerBrandKey } from "../theme/beerBrandPalettes";
+import PulpongLogo from "../assets/img/Pulpong.png";
 
 interface AppHeaderProps {
   tournamentName?: string;
@@ -19,7 +19,11 @@ export default function AppHeader({
     <header className="sticky top-0 z-10 border-b border-(--color-border) bg-(--color-surface)/95 px-4 py-3 backdrop-blur transition-colors duration-300">
       <div className="mx-auto flex max-w-5xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
-          <RedCupIcon className="h-5 w-5" />
+          <img
+            src={PulpongLogo}
+            alt="Pulpong Logo"
+            className="h-10 w-10 object-cover rounded-full mix-blend-multiply"
+          />
           <div>
             <h1 className="text-lg font-bold leading-tight text-(--color-primary)">
               PULPONG

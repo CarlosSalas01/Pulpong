@@ -15,19 +15,20 @@ export default function MatchCard({
 }: MatchCardProps) {
   const { teamA, teamB, winner } = match;
 
-  // Partido con bye: solo un equipo, ya tiene ganador automático
   if (!teamB) {
     return (
-      <div className="bg-neutral-800 border border-neutral-700 rounded-xl p-3 w-full md:w-44 shrink-0">
-        <p className="text-xs text-amber-500 font-semibold mb-2 uppercase tracking-wide">
+      <div className="w-full shrink-0 rounded-2xl border border-(--color-border) bg-(--color-surface) p-3 shadow-lg md:w-48">
+        <p className="mb-2 text-xs font-black uppercase tracking-wide text-(--color-primary)">
           BYE
         </p>
-        <div className="bg-amber-500/20 border border-amber-500/40 rounded-lg px-2 py-1.5 text-center">
-          <p className="text-amber-300 font-semibold text-sm truncate">
+
+        <div className="rounded-xl border border-(--color-border-strong) bg-(--color-soft) px-2 py-2 text-center">
+          <p className="truncate text-sm font-bold text-(--color-text)">
             {teamA?.name ?? "—"}
           </p>
         </div>
-        <p className="text-xs text-neutral-500 mt-1.5 text-center">
+
+        <p className="mt-2 text-center text-xs font-semibold text-(--color-muted)">
           Pasa automáticamente
         </p>
       </div>
@@ -36,11 +37,19 @@ export default function MatchCard({
 
   function teamClass(team: Team | null): string {
     if (!team) return "";
+
     const isWinner = winner?.id === team.id;
     const isLoser = winner !== null && winner.id !== team.id;
-    if (isWinner) return "bg-amber-500 border-amber-400 text-black";
-    if (isLoser) return "bg-neutral-900 border-neutral-700 text-neutral-500";
-    return "bg-neutral-700 border-neutral-600 text-white hover:border-amber-500 hover:bg-neutral-600";
+
+    if (isWinner) {
+      return "border-(--color-primary) bg-(--color-primary) text-(--color-on-primary) shadow-md";
+    }
+
+    if (isLoser) {
+      return "border-(--color-border) bg-(--color-soft) text-(--color-muted) opacity-70";
+    }
+
+    return "border-(--color-border) bg-(--color-surface) text-(--color-text) hover:border-(--color-primary) hover:bg-(--color-hover)";
   }
 
   function handleClick(team: Team | null) {
@@ -49,39 +58,69 @@ export default function MatchCard({
   }
 
   return (
-    <div className="bg-neutral-800 border border-neutral-700 rounded-xl p-3 w-full md:w-44 shrink-0">
-      <p className="text-xs text-neutral-500 font-semibold mb-2 uppercase tracking-wide">
-        Ronda {match.round}
-      </p>
+    <div
+      className={`w-full shrink-0 rounded-2xl border p-3 shadow-lg transition-colors md:w-48 ${
+        isCurrentRound
+          ? "border-(--color-border-strong) bg-(--color-surface)"
+          : "border-(--color-border) bg-(--color-surface)/75"
+      }`}
+    >
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <p className="text-xs font-black uppercase tracking-wide text-(--color-muted)">
+          Ronda {match.round}
+        </p>
+
+        {isCurrentRound && !winner && (
+          <span className="rounded-full bg-(--color-soft) px-2 py-0.5 text-[10px] font-bold text-(--color-primary)">
+            Activo
+          </span>
+        )}
+      </div>
+
       <div className="space-y-1.5">
         <button
           onClick={() => handleClick(teamA)}
           disabled={!isCurrentRound || winner !== null}
-          className={`w-full border rounded-lg px-2 py-2 text-sm font-medium truncate transition-all ${teamClass(teamA)} ${isCurrentRound && winner === null ? "cursor-pointer" : "cursor-default"}`}
+          className={`w-full truncate rounded-xl border px-2 py-2 text-sm font-bold transition-all ${teamClass(
+            teamA,
+          )} ${
+            isCurrentRound && winner === null
+              ? "cursor-pointer active:scale-[0.98]"
+              : "cursor-default"
+          }`}
         >
           {teamA?.name ?? "TBD"}
         </button>
 
-        <p className="text-neutral-600 text-xs text-center font-bold">VS</p>
+        <p className="text-center text-xs font-black text-(--color-muted)">
+          VS
+        </p>
 
         <button
           onClick={() => handleClick(teamB)}
           disabled={!isCurrentRound || winner !== null}
-          className={`w-full border rounded-lg px-2 py-2 text-sm font-medium truncate transition-all ${teamClass(teamB)} ${isCurrentRound && winner === null ? "cursor-pointer" : "cursor-default"}`}
+          className={`w-full truncate rounded-xl border px-2 py-2 text-sm font-bold transition-all ${teamClass(
+            teamB,
+          )} ${
+            isCurrentRound && winner === null
+              ? "cursor-pointer active:scale-[0.98]"
+              : "cursor-default"
+          }`}
         >
           {teamB?.name ?? "TBD"}
         </button>
       </div>
+
       {winner && (
-        <div className="mt-2 text-center">
-          <p className="text-xs text-amber-400 font-semibold truncate">
+        <div className="mt-3 border-t border-(--color-border) pt-2 text-center">
+          <p className="truncate text-xs font-black text-(--color-primary)">
             🏆 {winner.name}
           </p>
-          <hr className="mt-3 border-neutral-700" />
+
           {isCurrentRound && onClearWinner && (
             <button
               onClick={onClearWinner}
-              className="text-xs text-neutral-500 hover:text-white mt-1 transition-colors"
+              className="mt-1 rounded-lg px-2 py-1 text-xs font-semibold text-(--color-muted) transition-colors hover:bg-(--color-hover) hover:text-(--color-primary)"
             >
               Cambiar
             </button>

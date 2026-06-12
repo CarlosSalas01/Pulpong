@@ -21,6 +21,9 @@ function App() {
   const [tournamentName, setTournamentName] = useState("Torneo Beer Pong");
   const [showResetModal, setShowResetModal] = useState(false);
   const [showChampionCard, setShowChampionCard] = useState(true);
+  const [showAddTeamsPanel, setShowAddTeamsPanel] = useState(false);
+  const [showRegenerateBracketModal, setShowRegenerateBracketModal] =
+    useState(false);
 
   const [brand, setBrand] = useState<BeerBrandKey>(() => {
     const savedBrand = localStorage.getItem("pulpong-brand");
@@ -68,6 +71,29 @@ function App() {
     setShowChampionCard(true);
   }
 
+  function hasPlayableWinnerSelected() {
+    if (!tournament) return false;
+
+    return tournament.rounds.some((round) =>
+      round.some((match) => match.teamB && match.winner),
+    );
+  }
+
+  function handleRegenerateBracketConfirm() {
+    generateBracket();
+    setShowRegenerateBracketModal(false);
+    setShowAddTeamsPanel(false);
+    setShowChampionCard(true);
+  }
+
+  function handleRequestRegenerateBracket() {
+    if (!tournament) return;
+
+    if (tournament.teams.length < 2) return;
+
+    setShowRegenerateBracketModal(true);
+  }
+
   function handleViewBracket() {
     setShowChampionCard(false);
   }
@@ -97,13 +123,13 @@ function App() {
           >
             <div className="text-center">
               <div className="mb-3 flex justify-center">
-                <div className="rounded-3xl p-4 shadow-xl">
-                  <span className="text-2xl">
+                <div className="rounded-3xl p-4 ">
+                  <span className="">
                     {/* El mix-blend-multiply hace que el fondo blanco se vuelva invisible */}
                     <img
                       src={PulpongLogo}
                       alt="Pulpong Logo"
-                      className="mix-blend-multiply"
+                      className="h-44 w-auto object-cover rounded-full mix-blend-multiply"
                     />
                   </span>
                 </div>
@@ -121,7 +147,7 @@ function App() {
             <div className="w-full max-w-sm space-y-3 rounded-3xl border border-(--color-border) bg-(--color-surface) p-4 shadow-2xl">
               <input
                 type="text"
-                value={tournamentName}
+                // value={tournamentName}
                 onChange={(e) => setTournamentName(e.target.value)}
                 placeholder="Nombre del torneo"
                 className="app-input w-full rounded-xl border px-4 py-3 text-lg font-semibold transition-colors"
@@ -141,10 +167,10 @@ function App() {
         {phase === "teams" && tournament && (
           <div key="teams" className="animate-fade-in space-y-6">
             <div>
-              <h2 className="text-xl font-bold text-white mb-0.5">
+              <h2 className="mb-0.5 text-xl font-bold text-(--color-text)">
                 Registrar equipos
               </h2>
-              <p className="text-neutral-500 text-sm">
+              <p className="text-sm text-(--color-muted)">
                 {tournament.teams.length} equipo
                 {tournament.teams.length !== 1 ? "s" : ""} registrado
                 {tournament.teams.length !== 1 ? "s" : ""}
@@ -172,7 +198,7 @@ function App() {
             {tournament.teams.length >= 2 && (
               <button
                 onClick={handleGenerateBracket}
-                className="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl transition-colors mt-2"
+                className="app-button-primary mt-2 w-full rounded-xl py-3 font-bold transition-all active:scale-[0.98]"
               >
                 Generar enfrentamientos
               </button>
@@ -193,18 +219,27 @@ function App() {
               <>
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <h2 className="text-xl font-bold text-white mb-0.5">
+                    <h2 className="mb-0.5 text-xl font-bold text-(--color-text)">
                       Bracket
                     </h2>
-                    <p className="text-neutral-500 text-sm">
-                      Ronda actual: {tournament.rounds.length} de{" "}
+
+                    <p className="text-sm text-(--color-muted)">
+                      {tournament.teams.length} equipos · Ronda actual:{" "}
+                      {tournament.rounds.length} de{" "}
                       {Math.ceil(Math.log2(tournament.teams.length))} aprox.
                     </p>
+
+                    {hasPlayableWinnerSelected() && !tournament.champion && (
+                      <p className="mt-1 text-xs font-semibold text-red-600">
+                        Si agregas participantes, tendrás que regenerar el
+                        bracket y se perderán los ganadores seleccionados.
+                      </p>
+                    )}
                   </div>
                   {tournament.champion && !showChampionCard && (
                     <button
                       onClick={handleViewChampion}
-                      className="shrink-0 rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs font-semibold text-amber-300 transition-colors hover:border-amber-400 hover:bg-amber-500/20 hover:text-amber-200"
+                      className="app-button-secondary shrink-0 rounded-xl border px-3 py-2 text-xs font-semibold transition-colors"
                     >
                       Ver campeon
                     </button>
@@ -217,6 +252,58 @@ function App() {
                   onClearWinner={clearWinner}
                   onAdvanceRound={advanceRound}
                 />
+
+                {!tournament.champion && (
+                  <div className="rounded-3xl border border-(--color-border) bg-(--color-surface) p-4 shadow-xl">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowAddTeamsPanel((current) => !current)
+                      }
+                      className="flex w-full items-center justify-between gap-3 text-left"
+                    >
+                      <div>
+                        <p className="font-bold text-(--color-text)">
+                          ¿Faltó alguien?
+                        </p>
+                        <p className="text-sm text-(--color-muted)">
+                          Agrega, edita o elimina participantes y después
+                          actualiza los enfrentamientos.
+                        </p>
+                      </div>
+
+                      <span className="rounded-full bg-(--color-primary) px-3 py-1 text-xs font-black text-(--color-on-primary)">
+                        {showAddTeamsPanel ? "Cerrar" : "Agregar"}
+                      </span>
+                    </button>
+
+                    {showAddTeamsPanel && (
+                      <div className="mt-4 space-y-4 border-t border-(--color-border) pt-4">
+                        <TeamForm onAdd={addTeam} error={error} />
+
+                        <TeamList
+                          teams={tournament.teams}
+                          onRemove={removeTeam}
+                          onEdit={editTeam}
+                        />
+
+                        <button
+                          type="button"
+                          onClick={handleRequestRegenerateBracket}
+                          disabled={tournament.teams.length < 2}
+                          className="app-button-primary w-full rounded-xl py-3 font-bold transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          Actualizar enfrentamientos
+                        </button>
+
+                        <p className="text-center text-xs text-(--color-muted)">
+                          El bracket se regenerará usando la lista actual de
+                          equipos.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -232,6 +319,21 @@ function App() {
           danger
           onConfirm={handleResetConfirm}
           onCancel={() => setShowResetModal(false)}
+        />
+      )}
+
+      {showRegenerateBracketModal && (
+        <ConfirmModal
+          title="Actualizar enfrentamientos"
+          message={
+            hasPlayableWinnerSelected()
+              ? "Se regenerará el bracket con la lista actual de equipos. Los ganadores seleccionados se perderán. ¿Deseas continuar?"
+              : "Se regenerará el bracket con la lista actual de equipos. ¿Deseas continuar?"
+          }
+          confirmLabel="Actualizar bracket"
+          danger={hasPlayableWinnerSelected()}
+          onConfirm={handleRegenerateBracketConfirm}
+          onCancel={() => setShowRegenerateBracketModal(false)}
         />
       )}
     </div>

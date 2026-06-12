@@ -10,26 +10,21 @@ interface BrandSelectorProps {
 
 export default function BrandSelector({ value, onChange }: BrandSelectorProps) {
   return (
-    <div className="flex items-center gap-2 overflow-x-auto py-1">
-      {Object.entries(beerBrandPalettes).map(([key, palette]) => {
-        const brandKey = key as BeerBrandKey;
-        const isActive = value === brandKey;
+    <label className="flex items-center gap-2 text-xs font-semibold text-(--color-muted)">
+      {/* <span className="hidden sm:inline">Tema</span> */}
 
-        return (
-          <button
-            key={brandKey}
-            type="button"
-            onClick={() => onChange(brandKey)}
-            className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold transition-all ${
-              isActive
-                ? "border-[var(--color-primary)] bg-[var(--color-primary)] text-[var(--color-on-primary)] shadow-sm"
-                : "border-[var(--color-primary)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[var(--color-primary)] hover:bg-[var(--color-hover)]"
-            }`}
-          >
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value as BeerBrandKey)}
+        className="cursor-pointer rounded-lg border border-(--color-border) bg-(--color-surface) px-3 py-2 text-xs font-bold text-(--color-text) shadow-sm outline-none transition-colors hover:border-(--color-primary) focus:border-(--color-primary)"
+        aria-label="Seleccionar tema de cerveza"
+      >
+        {Object.entries(beerBrandPalettes).map(([key, palette]) => (
+          <option key={key} value={key}>
             {palette.name}
-          </button>
-        );
-      })}
-    </div>
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }

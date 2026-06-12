@@ -12,35 +12,43 @@ export default function ChampionCard({
   onViewBracket,
 }: ChampionCardProps) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center">
-      <div className="bg-linear-to-b from-amber-500/20 to-neutral-900 border-2 border-amber-500 rounded-3xl p-8 max-w-sm w-full shadow-2xl shadow-amber-900/40">
-        <div className="text-6xl mb-4">🏆</div>
-        <p className="text-amber-400 text-sm font-bold uppercase tracking-widest mb-2">
-          ¡Campeón del torneo!
-        </p>
-        <h2 className="text-white text-3xl font-extrabold mb-3 leading-tight">
-          {champion.name}
-        </h2>
-        {champion.players.length > 0 && (
-          <p className="text-neutral-400 text-sm mb-6">
-            {champion.players.join(" · ")}
+    <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
+      <div className="relative w-full max-w-sm overflow-hidden rounded-3xl border-2 border-(--color-border-strong) bg-(--color-surface) p-8 shadow-2xl">
+        <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-(--color-soft) to-transparent" />
+
+        <div className="relative">
+          <div className="mb-4 text-7xl">🏆</div>
+
+          <p className="mb-2 text-sm font-black uppercase tracking-widest text-(--color-primary)">
+            ¡Campeón del torneo!
           </p>
-        )}
-        <div className="flex flex-col gap-3 mt-6">
-          <button
-            onClick={onReset}
-            className="bg-amber-500 hover:bg-amber-400 text-black font-bold py-3 rounded-xl transition-colors"
-          >
-            Nuevo torneo
-          </button>
+
+          <h2 className="mb-3 text-3xl font-extrabold leading-tight text-(--color-text)">
+            {champion.name}
+          </h2>
+
+          {champion.players.length > 0 && (
+            <p className="mb-6 text-sm font-semibold text-(--color-muted)">
+              {champion.players.join(" · ")}
+            </p>
+          )}
+
+          <div className="mt-6 flex flex-col gap-3">
+            <button
+              onClick={onReset}
+              className="app-button-primary rounded-xl py-3 font-bold transition-all active:scale-[0.98]"
+            >
+              Nuevo torneo
+            </button>
+          </div>
         </div>
       </div>
 
       <button
-        className="text-neutral-500 text-xs mt-6 rounded px-3 py-1 hover:bg-neutral-700 hover:text-white transition-colors"
+        className="mt-6 rounded-xl px-3 py-2 text-xs font-bold text-(--color-muted) transition-colors hover:bg-(--color-hover) hover:text-(--color-primary)"
         onClick={onViewBracket}
       >
-        Ver bracket.
+        Ver bracket
       </button>
     </div>
   );

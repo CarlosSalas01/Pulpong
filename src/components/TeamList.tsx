@@ -30,19 +30,23 @@ export default function TeamList({ teams, onRemove, onEdit }: TeamListProps) {
       setEditError("El nombre no puede estar vacío.");
       return;
     }
+
     const isDuplicate = teams.some(
       (t) =>
         t.id !== editingId &&
         t.name.trim().toLowerCase() === editName.trim().toLowerCase(),
     );
+
     if (isDuplicate) {
       setEditError(`Ya existe un equipo llamado "${editName.trim()}".`);
       return;
     }
+
     const players = editPlayers
       .split(",")
       .map((p) => p.trim())
       .filter(Boolean);
+
     onEdit(editingId!, editName.trim(), players);
     setEditingId(null);
     setEditError("");
@@ -51,11 +55,11 @@ export default function TeamList({ teams, onRemove, onEdit }: TeamListProps) {
   if (teams.length === 0) return null;
 
   return (
-    <ul className="space-y-2 mt-4">
+    <ul className="space-y-2">
       {teams.map((team, i) => (
         <li key={team.id}>
           {editingId === team.id ? (
-            <div className="bg-neutral-800 border border-amber-500/50 rounded-lg p-3 space-y-2">
+            <div className="space-y-2 rounded-2xl border border-(--color-border-strong) bg-(--color-surface) p-3 shadow-lg">
               <input
                 autoFocus
                 type="text"
@@ -66,8 +70,9 @@ export default function TeamList({ teams, onRemove, onEdit }: TeamListProps) {
                   if (e.key === "Escape") cancelEdit();
                 }}
                 placeholder="Nombre del equipo"
-                className="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-amber-500"
+                className="app-input w-full rounded-xl border px-3 py-2 text-sm"
               />
+
               <input
                 type="text"
                 value={editPlayers}
@@ -76,52 +81,65 @@ export default function TeamList({ teams, onRemove, onEdit }: TeamListProps) {
                   if (e.key === "Enter") handleSaveEdit();
                   if (e.key === "Escape") cancelEdit();
                 }}
-                placeholder="Jugadores (separados por coma)"
-                className="w-full bg-neutral-700 border border-neutral-600 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-amber-500"
+                placeholder="Jugadores separados por coma"
+                className="app-input w-full rounded-xl border px-3 py-2 text-sm"
               />
-              {editError && <p className="text-red-400 text-xs">{editError}</p>}
+
+              {editError && (
+                <p className="text-xs font-semibold text-red-600">
+                  {editError}
+                </p>
+              )}
+
               <div className="flex gap-2">
                 <button
                   onClick={handleSaveEdit}
-                  className="flex-1 bg-amber-500 hover:bg-amber-400 text-black font-bold py-1.5 rounded-lg text-sm transition-colors"
+                  className="app-button-primary flex-1 rounded-xl py-2 text-sm font-bold transition-all active:scale-[0.98]"
                 >
                   Guardar
                 </button>
+
                 <button
                   onClick={cancelEdit}
-                  className="flex-1 bg-neutral-700 hover:bg-neutral-600 text-white py-1.5 rounded-lg text-sm transition-colors"
+                  className="app-button-secondary flex-1 rounded-xl border py-2 text-sm font-semibold transition-colors"
                 >
                   Cancelar
                 </button>
               </div>
             </div>
           ) : (
-            <div className="flex items-center justify-between bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2.5">
-              <div className="flex items-center gap-3 min-w-0">
-                <span className="text-amber-500 font-mono text-sm w-5 shrink-0">
-                  {i + 1}.
+            <div className="flex items-center justify-between rounded-2xl border border-(--color-border) bg-(--color-surface) px-3 py-3 shadow-sm transition-colors hover:border-(--color-border-strong)">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-(--color-primary) text-sm font-black text-(--color-on-primary)">
+                  {i + 1}
                 </span>
+
                 <div className="min-w-0">
-                  <p className="text-white font-medium truncate">{team.name}</p>
+                  <p className="truncate font-bold text-(--color-text)">
+                    {team.name}
+                  </p>
+
                   {team.players.length > 0 && (
-                    <p className="text-neutral-500 text-xs truncate">
+                    <p className="truncate text-xs text-(--color-muted)">
                       {team.players.join(", ")}
                     </p>
                   )}
                 </div>
               </div>
-              <div className="flex items-center gap-2 ml-3 shrink-0">
+
+              <div className="ml-3 flex shrink-0 items-center gap-2">
                 <button
                   onClick={() => startEdit(team)}
                   aria-label={`Editar ${team.name}`}
-                  className="text-neutral-500 hover:text-amber-400 transition-colors text-sm px-1"
+                  className="rounded-lg px-2 py-1 text-sm text-(--color-muted) transition-colors hover:bg-(--color-hover) hover:text-(--color-primary)"
                 >
                   ✏
                 </button>
+
                 <button
                   onClick={() => onRemove(team.id)}
                   aria-label={`Eliminar ${team.name}`}
-                  className="text-neutral-500 hover:text-red-400 transition-colors text-lg leading-none"
+                  className="rounded-lg px-2 py-1 text-lg leading-none text-(--color-muted) transition-colors hover:bg-red-600/10 hover:text-red-600"
                 >
                   ×
                 </button>
