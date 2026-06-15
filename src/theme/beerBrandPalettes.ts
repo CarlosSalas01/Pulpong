@@ -54,11 +54,22 @@ export const beerBrandPalettes = {
     dark: "#2B160A",
     onPrimary: "#FFFFFF",
   },
+  "dos-equis": {
+    name: "Dos Equis",
+    primary: "#05730F",
+    secondary: "#F91B0E",
+    accent: "#D7C493",
+    background: "#F8F3D2",
+    surface: "#FFF8E6",
+    text: "#1E1A12",
+    dark: "#063D0B",
+    onPrimary: "#FFFFFF",
+  },
 } as const;
 
 export type BeerBrandKey = keyof typeof beerBrandPalettes;
 
-export const defaultBeerBrand: BeerBrandKey = "victoria";
+export const defaultBeerBrand: BeerBrandKey = "miller";
 
 export function isBeerBrandKey(value: string): value is BeerBrandKey {
   return value in beerBrandPalettes;

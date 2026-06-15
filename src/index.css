@@ -56,6 +56,17 @@
   --color-on-primary: #ffffff;
 }
 
+:root[data-brand="dos-equis"] {
+  --color-primary: #05730F;
+  --color-secondary: #F91B0E;
+  --color-accent: #D7C493;
+  --color-bg: #F8F3D2;
+  --color-surface: #FFF8E6;
+  --color-text: #1E1A12;
+  --color-dark: #063D0B;
+  --color-on-primary: #FFFFFF;
+}
+
 :root[data-brand="modelo"] {
   --color-primary: #e5b858;
   --color-secondary: #c59f4e;
