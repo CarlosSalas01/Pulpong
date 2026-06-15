@@ -131,9 +131,9 @@ export default function TeamList({ teams, onRemove, onEdit }: TeamListProps) {
                 <button
                   onClick={() => startEdit(team)}
                   aria-label={`Editar ${team.name}`}
-                  className="rounded-lg px-2 py-1 text-sm text-(--color-muted) transition-colors hover:bg-(--color-hover) hover:text-(--color-primary)"
+                  className="rounded-lg px-2 py-1 text-sm text-(--color-muted) transition-colors hover:bg-(--color-hover) hover:text-(--color-primary) border border-(--color-border)"
                 >
-                  ✏
+                  Editar
                 </button>
 
                 <button

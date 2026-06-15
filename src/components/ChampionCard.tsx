@@ -1,4 +1,5 @@
 import type { Team } from "../models/tournament.types";
+import Champion from "../assets/img/Champ.png";
 
 interface ChampionCardProps {
   champion: Team;
@@ -17,7 +18,9 @@ export default function ChampionCard({
         <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-(--color-soft) to-transparent" />
 
         <div className="relative">
-          <div className="mb-4 text-7xl">🏆</div>
+          <div className="mb-4 flex justify-center">
+            <img src={Champion} alt="Champion" className="w-60 h-60" />
+          </div>
 
           <p className="mb-2 text-sm font-black uppercase tracking-widest text-(--color-primary)">
             ¡Campeón del torneo!

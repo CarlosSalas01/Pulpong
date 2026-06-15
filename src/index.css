@@ -11,33 +11,27 @@
   --color-on-primary: #ffffff;
 
   --color-muted: color-mix(in srgb, var(--color-text) 62%, transparent);
-  --color-soft: color-mix(
-    in srgb,
-    var(--color-primary) 10%,
-    var(--color-surface)
-  );
+  --color-soft: color-mix(in srgb,
+      var(--color-primary) 10%,
+      var(--color-surface));
   --color-border: color-mix(in srgb, var(--color-primary) 30%, transparent);
-  --color-border-strong: color-mix(
-    in srgb,
-    var(--color-primary) 55%,
-    transparent
-  );
-  --color-hover: color-mix(
-    in srgb,
-    var(--color-primary) 12%,
-    var(--color-surface)
-  );
+  --color-border-strong: color-mix(in srgb,
+      var(--color-primary) 55%,
+      transparent);
+  --color-hover: color-mix(in srgb,
+      var(--color-primary) 12%,
+      var(--color-surface));
 }
 
 :root[data-brand="miller"] {
-  --color-primary: #0033a0;
-  --color-secondary: #c99700;
-  --color-accent: #d71920;
-  --color-bg: #f7f7f2;
-  --color-surface: #ffffff;
-  --color-text: #061a40;
-  --color-dark: #061a40;
-  --color-on-primary: #ffffff;
+  --color-primary: #C8953A;
+  --color-secondary: #0F4B3F;
+  --color-accent: #B3261E;
+  --color-bg: #F7F0E6;
+  --color-surface: #FFF8EA;
+  --color-text: #2A2116;
+  --color-dark: #06342D;
+  --color-on-primary: #1A1208;
 }
 
 :root[data-brand="corona"] {
@@ -63,25 +57,30 @@
 }
 
 :root[data-brand="modelo"] {
-  --color-primary: #d6a441;
-  --color-secondary: #102a54;
-  --color-accent: #111111;
-  --color-bg: #f8f1e3;
-  --color-surface: #ffffff;
-  --color-text: #111111;
-  --color-dark: #050505;
-  --color-on-primary: #111111;
+  --color-primary: #e5b858;
+  --color-secondary: #c59f4e;
+  --color-accent: #ffffff;
+  --color-bg: #110f0e;
+  --color-surface: #1a1715;
+  --color-text: #f5f0eb;
+  --color-dark: #000000;
+  --color-on-primary: #110f0e;
+}
+
+:root[data-brand="modelo"] .app-logo-img {
+  background-color: #ffffff;
+  mix-blend-mode: normal;
 }
 
 :root[data-brand="barrilito"] {
-  --color-primary: #d99a22;
-  --color-secondary: #7a3e18;
-  --color-accent: #b3261e;
-  --color-bg: #fff1c7;
-  --color-surface: #fff8e6;
-  --color-text: #2b160a;
-  --color-dark: #2b160a;
-  --color-on-primary: #ffffff;
+  --color-primary: #4B2B17;
+  --color-secondary: #D99A22;
+  --color-accent: #1F3A90;
+  --color-bg: #FFF1C7;
+  --color-surface: #FFF8E6;
+  --color-text: #2B160A;
+  --color-dark: #2B160A;
+  --color-on-primary: #FFFFFF;
 }
 
 body {
@@ -98,6 +97,10 @@ body {
     color: var(--color-text);
   }
 
+  .app-logo-img {
+    mix-blend-mode: multiply;
+  }
+
   .app-surface {
     background-color: var(--color-surface);
     color: var(--color-text);
@@ -108,8 +111,7 @@ body {
     background-color: var(--color-surface);
     color: var(--color-text);
     border-color: var(--color-border);
-    box-shadow: 0 18px 45px
-      color-mix(in srgb, var(--color-dark) 14%, transparent);
+    box-shadow: 0 18px 45px color-mix(in srgb, var(--color-dark) 14%, transparent);
   }
 
   .app-muted {
@@ -169,6 +171,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

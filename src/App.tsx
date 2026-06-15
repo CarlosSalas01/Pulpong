@@ -109,6 +109,7 @@ function App() {
         brand={brand}
         onBrandChange={setBrand}
         onReset={tournament ? () => setShowResetModal(true) : undefined}
+        isChampionScreen={phase === "bracket" && !!tournament?.champion && showChampionCard}
       />
 
       <main className="max-w-2xl mx-auto px-4 py-6">
@@ -129,7 +130,7 @@ function App() {
                     <img
                       src={PulpongLogo}
                       alt="Pulpong Logo"
-                      className="h-44 w-auto object-cover rounded-full mix-blend-multiply"
+                      className="h-64 w-auto"
                     />
                   </span>
                 </div>
